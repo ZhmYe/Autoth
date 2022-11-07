@@ -54,11 +54,13 @@
 
   打开Chrome浏览器【设置】【关于Chrome】即可查看当前版本
 
-  ![image-20221103163539857](C:\Users\57677\AppData\Roaming\Typora\typora-user-images\image-20221103163539857.png)
+  ![image-20221103163539857](images/image-20221103163539857.png)
 
 - 下载`ChromeDriver`
 
-  进入http://chromedriver.storage.googleapis.com/index.html，根据上面的浏览器版本找到对应的可兼容的`ChromeDriver.exe`
+  http://chromedriver.storage.googleapis.com/index.html
+
+  根据上面的浏览器版本找到对应的可兼容的`ChromeDriver.exe`
 
 - 修改脚本中的路径
 
