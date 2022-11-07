@@ -1,6 +1,4 @@
-### <center>天河平台自动化脚本使用说明</center>
-
-[TOC]
+### <center>README</center>
 
 #### 一、使用环境
 
