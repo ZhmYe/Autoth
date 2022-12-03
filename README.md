@@ -70,8 +70,13 @@ optional arguments:
         machine_data = [data.split(" ")[0] for data in machine_data]
         return machine_data
     ```
+  
+  ​		`name.txt`可被利用至此处快速 删除所有之前开启的机器，如需保留部分机器，可手动修改`name.txt`或在代码中自定义生成方法。
+  
+  - shell输入命令`python main.py -r close`，删除成功
+  
 
-​			  `name.txt`可被利用至此处快速 删除所有之前开启的机器，如需保留部分机器，可手动修改`name.txt`或在代码中自定义生成方法。
+![image-20221203141904671](images/image-20221203141904671.png)
 
 #### 三、脚本问题
 
