@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 ### <center>AutoTh脚本使用说明</center>
 
 #### 一、脚本说明
@@ -84,3 +85,7 @@ optional arguments:
 - `http://数字.proxy.nscc-gz.cn:8888/`用于访问shell
 
   
+=======
+# Autoth
+Automation Script for th
+>>>>>>> e39df68ed55f6f16c30d362819b550adbeea1b38
