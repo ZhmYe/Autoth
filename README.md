@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 ### <center>AutoTh脚本使用说明</center>
 
 #### 一、脚本说明
@@ -38,15 +37,15 @@ optional arguments:
 
   - 输入选择配置对应的序号以选择要开启的机器的配置
 
-    ![image-20221203135600578](images\image-20221203135600578.png)
+    ![image-20221203135600578](images/image-20221203135600578.png)
 
   - 启动成功
 
-![image-20221203135631255](images\image-20221203135631255.png)
+![image-20221203135631255](images/image-20221203135631255.png)
 
 ​			同时，开启作业成功后会在本地保存一个用于记录机器名、机器工作目录、机器shell url前缀的`name.txt`
 
-![image-20221203135951212](images\image-20221203135951212.png)
+![image-20221203135951212](images/image-20221203135951212.png)
 
 - 关闭作业
 
@@ -83,9 +82,3 @@ optional arguments:
 ​		其中最后的数字可用于：
 
 - `http://数字.proxy.nscc-gz.cn:8888/`用于访问shell
-
-  
-=======
-# Autoth
-Automation Script for th
->>>>>>> e39df68ed55f6f16c30d362819b550adbeea1b38
