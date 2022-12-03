@@ -2,6 +2,7 @@ import requests
 import json
 from tqdm import tqdm
 from submit import submit_request
+from delete import delete_request
 class Params:
     def __init__(self, jobname, cluster, partition, cpu, gpu, memory):
         self.jobname = jobname
@@ -22,6 +23,7 @@ class AutoTh:
         self.username = username
         self.get_token()
         self.submit_requst = submit_request(self.token)
+        self.delete_request = delete_request(self.token)
         # self.url = url
     def get_token(self):
         name_payload = {"username":self.username,"password":"RWNudWJsb2NrY2hhaW4=","token_type":'null',"cookie_exp":'null',"redirect_url":'null'}
@@ -63,3 +65,23 @@ class AutoTh:
             print("         {}: {} / {}".format(code, status_code[code], len(params.jobname)))
         print("-------------------Submit END-------------------")
         return machine_info_list
+    def delete(self, params):
+        print("-------------------Delete-------------------")
+        print("Params: ")
+        print("     number: ", params.number)
+        # print("     jobname: ", params.jobname)
+        print("     cluster: ",  params.cluster)
+        print("     partition: ", params.partition)
+        status_code = {}
+        headers = self.delete_request.get_headers()
+        for jobname in tqdm(params.jobname):
+            response = requests.delete('https://starlight.nscc-gz.cn/api/job/running/k8s_venus/{}'.format(jobname), headers=headers)
+            if response.status_code in status_code:
+                status_code[response.status_code] += 1
+            else:
+                status_code[response.status_code] = 1
+        print("\nResult: ")
+        print("     response Status Code: ")
+        for code in status_code:
+            print("         {}: {} / {}".format(code, status_code[code], len(params.jobname)))
+        print("-------------------Delete END-------------------")
