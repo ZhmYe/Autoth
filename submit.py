@@ -23,6 +23,7 @@ class submit_request:
         self.payload = json.dumps(submit_payload)
         return self.payload
     def get_post_headers(self):
+        assert (self.payload is not None), 'Please get payload first...'
         self.post_headers = {
             'Accept': "application/json",
             'Accept-Encoding': 'gzip, deflate, br',
