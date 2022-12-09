@@ -160,3 +160,7 @@ optional arguments:
 ​		其中最后的数字可用于：
 
 - `http://数字.proxy.nscc-gz.cn:8888/`用于访问shell
+
+
+
+​		如果和天河平台的socket连接出现问题，会导致连接shell以运行shell启动脚本功能无法完成。
