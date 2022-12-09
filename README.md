@@ -2,13 +2,15 @@
 
 #### 一、脚本说明
 
-​		本脚本通过爬取天河平台前端发起开启作业、关闭作业时向后端发起的请求（包括请求方式POST/GET/DELETE, 请求头headers, 和请求参数payload）在脚本中模拟客户在浏览器端发起请求，实现了自定义名称的批量开启作业、根据指定机器名批量关闭作业功能。脚本提供的参数如下：
+​		本脚本通过爬取天河平台前端发起开启作业、关闭作业时向后端发起的请求（包括请求方式POST/GET/DELETE, 请求头headers, 和请求参数payload）在脚本中模拟客户在浏览器端发起请求，实现了自定义名称的批量开启作业、根据指定机器名批量关闭作业等功能。脚本提供的参数如下：
 
 ```
 usage: main.py [-h] [-r R]
 optional arguments:
   -h, --help  show this help message and exit
   -r R        open, close
+  -e          execute shell or not
+  -d          delete storage or not
 ```
 
 
@@ -19,7 +21,7 @@ optional arguments:
 
   - 在`userFunction.py`中自定义开启的机器名
 
-    本次脚本给出了使用者自定义的一些函数的接口，定义在`userFunction.py`中，目前已给出的有`get_open_job_name`和`get_close_job_name`两个函数。
+    **本次脚本给出了使用者自定义的一些函数的接口，定义在`userFunction.py`中。**
 
     开启机器时，使用者可自定义修改`get_open_job_name`函数中的内容，返回值必须是形如[机器名，机器名，....，机器名]的`list`
 
@@ -78,11 +80,82 @@ optional arguments:
 
 ![image-20221203141904671](images/image-20221203141904671.png)
 
+- 连接shell以运行shell启动脚本
+
+  该功能作为打开机器功能的附属功能，通过`-e`参数传入，即运行
+
+  ```
+  python main.py -r open -e
+  ```
+
+  在打开机器之后，在天河平台上于~/.zshrc中编写shell启动脚本。当前脚本通过`WebSocket`与天河后台`socket`接口进行交互，达到模拟在浏览器上打开shell界面以此运行shell启动脚本。
+
+  使用者可自定义修改`get_url()`，`operate_process()`函数。
+
+  `get_url()`给定想要访问的shell url的前缀，可结合`name.txt`使用
+
+  ```python
+  def get_url():
+      # 这里得到shell的url前面的前缀数字列表
+      # 如http://260547.proxy.nscc-gz.cn:8888/ 前面的260547
+      with open("name.txt", "r", encoding="utf-8") as f:
+          machine_data = f.read().split("\n")
+          f.close()
+      while (True):
+          try:
+              machine_data.remove('')
+          except:
+              break
+      url = [data.split(" ")[2] for data in machine_data]
+      return url
+  ```
+
+  `operate_process(autoth)`给出运行完shell启动脚本后所要的事情，下面给出一个例子：
+
+  在天河~/.zshrc中编写脚本使得shell启动后当前机器会在家目录下创建一个`ip/{机器ip}`的文件，本脚本已提供`get_ip()`接口来得到不同机器家目录`ip/`目录下的文件名（即ip），通过在`operate_process()`中编写如下代码：
+
+  ```python
+  def operate_process(autoth):
+      # 自定义在连接shell后，机器运行shell启动脚本后后续要做的操作
+      machine_name = get_close_job_name()
+      url_dic = {name: 'https://starlight.nscc-gz.cn/api/storage/dir_info?dir=/GPUFS/app/bihu/spooler/{}/ip&sort_key=time&order_by=desc'.format(name) for name in machine_name}
+      ip_dic = {}
+      for name in url_dic:
+          url = url_dic[name]
+          ip = autoth.get_ip(url)
+          ip_dic[name] = ip
+      with open("ip.txt", 'w', encoding="utf-8") as f:
+          for name in ip_dic:
+              f.write("{} {}\n".format(name, ip_dic[name]))
+  ```
+
+  上述代码可以在本地生成一个`ip.txt`其中每一行为形如`text-02dez 192.168.32.53` ，`机器名 机器ip`
+
+- 删除家目录的文件夹
+
+  该功能作为关闭机器功能的附属功能，通过参数`-d`传入，即运行：
+
+  ```
+  python main.py -r close -d
+  ```
+
+  如上面所讨论的，我们可以在天河每台机器的家目录下创建文件夹如`ip/`，该功能可以将给定名称的所有机器的家目录下的某些文件夹删除。
+
+  通过在`get_dir_name()`中给定所要删除的文件夹名列表，返回值必须是形如`[文件夹名，文件夹名...]`的`list`
+
+  ```python
+  def get_dir_name():
+      # 这里写自己想要删除的文件夹名列表
+      return ["ip"]
+  ```
+
+  同时通过上述`get_close_job_name()`给出要关闭并删除文件夹的机器名
+
 #### 三、脚本问题
 
 ​		当前脚本会出现开启机器后如从浏览器进入机器管理界面，下方的shell入口和ssh网址为null的情况，但不影响直接通过`name.txt`中保存的信息进入shell或者ssh远程连接。
 
-​		其中`name.txt`的保存格式为形如`text-0nh57 /GPUFS/app/bihu/spooler/text-0nh57 263513`的`机器名 机器目录 url前缀`
+​		其中`name.txt`的保存格式为形如`text-0nh57 /GPUFS/app/bihu/spooler/text-0nh57 263513`,`机器名 机器目录 url前缀`
 
 ​		其中最后的数字可用于：
 
