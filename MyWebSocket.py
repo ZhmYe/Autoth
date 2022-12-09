@@ -1,5 +1,6 @@
 import websocket
 import base64
+import time
 class websocketInstance:
     def __init__(self, url) -> None:
         self.message_number = 0
@@ -25,9 +26,9 @@ class websocketInstance:
             ws.send(char)
     def on_message(self, ws, message):
         self.message_number += 1
-        # print(message)
-        # print(self.message_number)
-        if self.message_number >= 31:
+        print(message)
+        print(self.message_number)
+        if self.message_number >= 4:
             self.ws.close()
             # print("     WebSocket: close")
     def run(self):
