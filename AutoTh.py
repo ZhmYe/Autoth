@@ -121,3 +121,11 @@ class AutoTh:
         print("-------------------Start Shell END-------------------")
         # ws.keep_running=False
         # ws.run_forever()
+    def get_ip(self, url):
+        response = requests.get(url, headers=self.submit_request.get_get_headers())
+        # print(json.loads(response.text)['spec'][0])
+        try:
+            ip = json.loads(response.text)['spec'][0]['name']
+            return ip
+        except:
+            raise AssertionError("dir info error")

@@ -19,7 +19,7 @@ def get_close_job_name():
     return machine_data
 def get_dir_name():
     #这里写自己想要删除的文件夹名列表
-    return ["test"]
+    return ["ip"]
 def get_url():
     with open("name.txt", "r", encoding="utf-8") as f:
         machine_data = f.read().split("\n")
@@ -31,3 +31,14 @@ def get_url():
             break
     url = [data.split(" ")[2] for data in machine_data]
     return url
+def operate_process(autoth):
+    machine_name = get_close_job_name()
+    url_dic = {name: 'https://starlight.nscc-gz.cn/api/storage/dir_info?dir=/GPUFS/app/bihu/spooler/{}/ip&sort_key=time&order_by=desc'.format(name) for name in machine_name}
+    ip_dic = {}
+    for name in url_dic:
+        url = url_dic[name]
+        ip = autoth.get_ip(url)
+        ip_dic[name] = ip
+    with open("ip.txt", 'w', encoding="utf-8") as f:
+        for name in ip_dic:
+            f.write("{} {}\n".format(name, ip_dic[name]))
