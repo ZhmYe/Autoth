@@ -26,10 +26,11 @@ class websocketInstance:
             ws.send(char)
     def on_message(self, ws, message):
         self.message_number += 1
-        print(message)
-        print(self.message_number)
-        if self.message_number >= 4:
+        # print(message)
+        # print(self.message_number)
+        if self.message_number >= 3:
             self.ws.close()
             # print("     WebSocket: close")
     def run(self):
         self.ws.run_forever()
+        

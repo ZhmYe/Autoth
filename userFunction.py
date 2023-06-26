@@ -2,7 +2,7 @@ def get_open_job_name():
     # 这里写自己想要的机器名列表
     # 示例：
     # jobname = ["text-{}".format(i) for i in range(100)]
-    jobname = ["text-{}".format(i) for i in range(1)]
+    jobname = ["text-{}".format(i) for i in range(33)]
     return jobname
 def get_close_job_name():
     # 这里写自己想要删除的机器名列表
@@ -35,13 +35,14 @@ def get_url():
     return url
 def operate_process(autoth):
     # 自定义在连接shell后，机器运行shell启动脚本后后续要做的操作
-    machine_name = get_close_job_name()
-    url_dic = {name: 'https://starlight.nscc-gz.cn/api/storage/dir_info?dir=/GPUFS/app/bihu/spooler/{}/ip&sort_key=time&order_by=desc'.format(name) for name in machine_name}
-    ip_dic = {}
-    for name in url_dic:
-        url = url_dic[name]
-        ip = autoth.get_ip(url)
-        ip_dic[name] = ip
-    with open("ip.txt", 'w', encoding="utf-8") as f:
-        for name in ip_dic:
-            f.write("{} {}\n".format(name, ip_dic[name]))
+    return
+    # machine_name = get_close_job_name()
+    # url_dic = {name: 'https://starlight.nscc-gz.cn/api/storage/dir_info?dir=/GPUFS/app/bihu/spooler/{}/ip&sort_key=time&order_by=desc'.format(name) for name in machine_name}
+    # ip_dic = {}
+    # for name in url_dic:
+    #     url = url_dic[name]
+    #     ip = autoth.get_ip(url)
+    #     ip_dic[name] = ip
+    # with open("ip.txt", 'w', encoding="utf-8") as f:
+    #     for name in ip_dic:
+    #         f.write("{} {}\n".format(name, ip_dic[name]))
