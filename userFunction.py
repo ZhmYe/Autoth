@@ -2,7 +2,7 @@ def get_open_job_name():
     # 这里写自己想要的机器名列表
     # 示例：
     # jobname = ["text-{}".format(i) for i in range(100)]
-    jobname = ["text-{}".format(i) for i in range(33)]
+    jobname = ["text-{}".format(i) for i in range(16)]
     return jobname
 def get_close_job_name():
     # 这里写自己想要删除的机器名列表
